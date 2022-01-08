@@ -229,7 +229,7 @@ class manageDoucumentController extends Controller
 // this is for create page of invoice
     public function createInvoice()
     {
-        $codes = DB::table('products')->get();
+        $codes = DB::table('products')->where('status','Approved')->get();
         $ActivityCodes = DB::table('activity_code')->get();
         $allCompanies = DB::table('companies2')->get();
         $taxTypes = DB::table('taxtypes')->get();
@@ -240,7 +240,7 @@ class manageDoucumentController extends Controller
 
     public function createInvoice2(Request $request)
     {
-        $codes = DB::table('products')->get();
+        $codes = DB::table('products')->where('status','Approved')->get();
         $ActivityCodes = DB::table('activity_code')->get();
         $allCompanies = DB::table('companies2')->get();
         $taxTypes = DB::table('taxtypes')->get();

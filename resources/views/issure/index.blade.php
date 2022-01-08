@@ -59,14 +59,15 @@
 
 
 									<tr>
-										<td>{{ $issure->name}}</td>
-										<td>{{ $issure->branchID }}</td>
-										<td>{{ getCOuntryName($issure->country)  }}</td>
+										<td>{{ $issure->company_name}}</td>
+										{{-- <td>{{ $issure->branchID }}</td> --}}
+										<td>0</td>
+										<td>EG</td>
 										<td>{{ $issure->governate }}</td>
 										<td>{{ $issure->regionCity }}</td>
 										<td>{{ $issure->street }}</td>
 										<td>{{ $issure->buildingNumber }}</td>
-										<td>{{ $issure->postalCode }}</td>
+										{{-- <td>{{ $issure->postalCode }}</td> --}}
 										<td>{{ $issure->floor }}</td>
 										<td>{{ $issure->room }}</td>
 										<td>{{ $issure->landmark }}</td>

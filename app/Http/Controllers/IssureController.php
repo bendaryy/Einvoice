@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Issure;
 use App\Models\Activitycode;
 use App\Models\Country;
+use App\Models\Details;
+use App\Models\Issure;
+use Illuminate\Http\Request;
 
 class IssureController extends Controller
 {
@@ -16,13 +17,10 @@ class IssureController extends Controller
      */
     public function index()
     {
-        $issures = Issure::all();
+        $issures = Details::where( 'user_id',auth()->user()->id)->get();
 
         return view('issure.index', compact('issures'));
     }
-
-
-
 
     public function edit($id)
     {
@@ -35,7 +33,6 @@ class IssureController extends Controller
         return view('issure.edit', compact('issure', 'activity', 'countries'));
     }
 
-
     public function create()
     {
 
@@ -46,55 +43,53 @@ class IssureController extends Controller
         return view('issure.create', compact('activity', 'countries'));
     }
 
-
     public function store(Request $request)
     {
 
-       $request->validate([
+        $request->validate([
 
-        "name"            => "required",
-        "branchID"        =>  "required",
-        "country"         =>  "required",
-        "governate"       =>  "required",
-        "regionCity"      =>  "required",
-        "street"          =>  "required",
-        "buildingNumber"  =>  "required",
-        "type"            =>  "required",
-        "regid"           =>  "required",
-       ]);
+            "name" => "required",
+            "branchID" => "required",
+            "country" => "required",
+            "governate" => "required",
+            "regionCity" => "required",
+            "street" => "required",
+            "buildingNumber" => "required",
+            "type" => "required",
+            "regid" => "required",
+        ]);
 
-       $issure = Issure::create($request->all());
+        $issure = Issure::create($request->all());
 
-       session()->flash('message', 'Created Successfully');
+        session()->flash('message', 'Created Successfully');
 
-       return redirect('issure');
+        return redirect('issure');
 
     }
-
 
     public function update(Request $request, $id)
     {
 
-       $request->validate([
+        $request->validate([
 
-        "name"            => "required",
-        "branchID"        =>  "required",
-        "country"         =>  "required",
-        "governate"       =>  "required",
-        "regionCity"      =>  "required",
-        "street"          =>  "required",
-        "buildingNumber"  =>  "required",
-        "type"            =>  "required",
-        "regid"           =>  "required",
-       ]);
+            "name" => "required",
+            "branchID" => "required",
+            "country" => "required",
+            "governate" => "required",
+            "regionCity" => "required",
+            "street" => "required",
+            "buildingNumber" => "required",
+            "type" => "required",
+            "regid" => "required",
+        ]);
 
-       $issure = Issure::findOrFail($id);
+        $issure = Issure::findOrFail($id);
 
-       $issure->update($request->all());
+        $issure->update($request->all());
 
-       session()->flash('message', 'Updated Successfully');
+        session()->flash('message', 'Updated Successfully');
 
-       return redirect('issure');
+        return redirect('issure');
 
     }
 
