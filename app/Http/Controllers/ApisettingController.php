@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Apisetting;
+use App\Models\Details;
 
 class ApisettingController extends Controller
 {
 
     public function index()
     {
-         $setting = Apisetting::first();
+         $setting = Details::first();
 
         return view('apisetting.index', compact('setting'));
     }

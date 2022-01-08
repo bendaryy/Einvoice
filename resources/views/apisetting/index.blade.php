@@ -2,9 +2,9 @@
 
 @section('content')
 
- 
+
 			<div class="page-content">
-			 
+
 				<div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
 					<div class="breadcrumb-title pe-3">@lang("site.dashboard")</div>
 					<div class="ps-3">
@@ -19,11 +19,11 @@
 						<div class="btn-group">
 							<a href="{{ route('setting.edit', $setting->id) }}" class="btn btn-outline-success px-5 radius-30">
                                 <i class="bx bx-message-square-edit mr-1"></i>@lang('site.edit') </a>
-							 
+
 						</div>
 					</div>
 				</div>
- 
+
 				<hr/>
 				<div class="card">
 					<div class="card-body">
@@ -40,10 +40,10 @@
 
 									<tr>
 										<td>{{ $setting->client_id}}</td>
-										<td>{{ $setting->secret_id }}</td>
-										<td>{{ $setting->commercial_number }}</td>
+										<td>{{ $setting->client_secret }}</td>
+										<td>{{ $setting->company_id }}</td>
 									</tr>
-							 
+
 								</tbody>
 								<tfoot>
 									<tr>
@@ -57,7 +57,7 @@
 					</div>
 				</div>
 			</div>
-	 
+
 
 
 @endsection
@@ -78,7 +78,7 @@
 				lengthChange: false,
 				buttons: [ 'copy', 'excel', 'pdf', 'print']
 			} );
-		 
+
 			table.buttons().container()
 				.appendTo( '#example2_wrapper .col-md-6:eq(0)' );
 		} );
