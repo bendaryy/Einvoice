@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Products;
 use App\Models\Apisetting;
+use App\Models\Products;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+
 
 class ProductsController extends Controller
 {
@@ -15,9 +17,24 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        $products = Products::latest()->get();
+        $response = Http::asForm()->post('https://id.preprod.eta.gov.eg/connect/token', [
+            'grant_type' => 'client_credentials',
+            'client_id' => auth()->user()->details->client_id,
+            'client_secret' => auth()->user()->details->client_secret,
+            'scope' => "InvoicingAPI",
+        ]);
+
+        $product = Http::withHeaders([
+            "Authorization" => 'Bearer ' . $response['access_token'],
+            "Content-Type" => "application/json",
+        ])->get('https://api.preprod.invoicing.eta.gov.eg/api/v1.0/codetypes/requests/my?Active=true&Status=Submitted&PageSize=20');
+
+// return $product['result'];
+        // $products = Products::latest()->get();
+        $products = $product['result'];
 
         return view('products.index', compact('products'));
+
     }
 
     /**
@@ -27,7 +44,7 @@ class ProductsController extends Controller
      */
     public function create()
     {
-       return view('products.create');
+        return view('products.create');
     }
 
     /**
@@ -39,28 +56,62 @@ class ProductsController extends Controller
     public function store(Request $request)
     {
 
-         $request->validate([
-                'name_ar'     => 'required|min:3|unique:products,name_ar',
-                'name_en'     => 'required|min:3|unique:products,name_en',
-                'desc_ar'     => 'required|min:5',
-                'desc_en'     => 'required|min:5',
-                'active_from' => 'required|date',
-                'price'       => 'required|numeric',
-                'gpc'         => 'required|numeric|min:8|exists:categories,code',
-                'egs'         => 'required|numeric|unique:products,code',
-         ]);
 
-         $input = $request->except(['egs']);
 
-         $tax = Apisetting::first();
+// $response = Http::asForm()->post('https://id.preprod.eta.gov.eg/connect/token', [
+//     'grant_type' => 'client_credentials',
+//     'client_id' => auth()->user()->details->client_id,
+//     'client_secret' => auth()->user()->details->client_secret,
+//     'scope' => "InvoicingAPI",
+// ]);
 
-         $input['egs'] = 'EG-' .  $tax->commercial_number . '-' . $request->egs;
+// $addProduct = [
+//     "items" => [[
+//         "codeType" => "EGS",
+//         "itemCode" => "EG-" . auth()->user()->details->company_id . '-' . $request->egs,
+//         "parentCode" => $request->gpc,
+//         "codeName" => $request->name_en,
+//         "codeNameAr" => $request->name_ar,
+//         "activeFrom" => $request->active_from,
+//         "activeTo" => $request->active_to,
+//         "description" => $request->desc_en,
+//         "descriptionAr" => $request->desc_ar,
+//         "requestReason" => "Request reason text",
+//     ]],
 
-         $input['code'] =  $request->egs;
+// ];
 
-         Products::create($input);
+// $product = Http::withHeaders([
+//     "Authorization" => 'Bearer ' . $response['access_token'],
+//     "Content-Type" => "application/json",
+// ])->withBody($addProduct, "application/json")->post('https://api.preprod.invoicing.eta.gov.eg/api/v1.0/codetypes/requests/codes');
 
-         return redirect('products');
+// return $addProduct;
+
+
+
+        $request->validate([
+            'name_ar' => 'required|min:3|unique:products,name_ar',
+            'name_en' => 'required|min:3|unique:products,name_en',
+            'desc_ar' => 'required|min:5',
+            'desc_en' => 'required|min:5',
+            'active_from' => 'required|date',
+            'price' => 'required|numeric',
+            'gpc' => 'required|numeric|min:8|exists:categories,code',
+            'egs' => 'required|numeric|unique:products,code',
+        ]);
+
+        $input = $request->except(['egs']);
+
+        $tax = Apisetting::first();
+
+        $input['egs'] = 'EG-' . $tax->commercial_number . '-' . $request->egs;
+
+        $input['code'] = $request->egs;
+
+        Products::create($input);
+
+        return redirect('products');
     }
 
     /**
@@ -98,30 +149,29 @@ class ProductsController extends Controller
     {
         $product = Products::findOrFail($id);
 
-
         $request->validate([
-            'name_ar'     => 'required|min:3|unique:products,name_ar,'.$id,
-            'name_en'     => 'required|min:3|unique:products,name_en,'.$id,
-            'desc_ar'     => 'required|min:5',
-            'desc_en'     => 'required|min:5',
-            'price'       => 'required|numeric',
-            'gpc'         => 'required|numeric|min:8|exists:categories,code',
-            'egs'         => 'required|numeric|unique:products,egs,'.$id,
-     ]);
+            'name_ar' => 'required|min:3|unique:products,name_ar,' . $id,
+            'name_en' => 'required|min:3|unique:products,name_en,' . $id,
+            'desc_ar' => 'required|min:5',
+            'desc_en' => 'required|min:5',
+            'price' => 'required|numeric',
+            'gpc' => 'required|numeric|min:8|exists:categories,code',
+            'egs' => 'required|numeric|unique:products,egs,' . $id,
+        ]);
 
-     $input = $request->except(['egs']);
+        $input = $request->except(['egs']);
 
-     $tax = Apisetting::first();
+        $tax = Apisetting::first();
 
-     $input['egs'] = 'EG-' .  $tax->commercial_number . '-' . $request->egs;
+        $input['egs'] = 'EG-' . $tax->commercial_number . '-' . $request->egs;
 
-     $input['code'] =  $request->egs;
+        $input['code'] = $request->egs;
 
-     $product->update($input);
+        $product->update($input);
 
-     session()->flash('message', 'Updated Successfully');
+        session()->flash('message', 'Updated Successfully');
 
-     return redirect('products');
+        return redirect('products');
     }
 
     /**
@@ -142,97 +192,90 @@ class ProductsController extends Controller
 
     }
 
-
     public function submit()
     {
-       $products = Products::whereNull('status')->latest()->get();
+        $products = Products::whereNull('status')->latest()->get();
 
-       return view('products.submit', compact('products'));
+        return view('products.submit', compact('products'));
 
     }
 
     public function sendproducts(Request $request)
     {
 
-         $request->validate([
-             'product_ids' => 'required|array'
-         ]);
+        $request->validate([
+            'product_ids' => 'required|array',
+        ]);
 
-         $list = [];
+        $list = [];
 
-         $tax = Apisetting::first();
+        $tax = Apisetting::first();
 
-         foreach($request->product_ids as $id){
+        foreach ($request->product_ids as $id) {
 
             $product = Products::findOrFail($id);
 
-            $list['codeType']      = 'EGS';
-            $list['parentCode']    =  $product->gpc;
-            $list['itemCode']      =  $product->egs;
-            $list['codeName']      =  $product->name_en;
-            $list['codeNameAr']    =  $product->name_ar;
-            $list['activeFrom']    =  $product->active_from;
-            $list['activeTo']      =  $product->active_to;
-            $list['description']   =  $product->desc_en;
-            $list['descriptionAr'] =  $product->desc_ar;
+            $list['codeType'] = 'EGS';
+            $list['parentCode'] = $product->gpc;
+            $list['itemCode'] = $product->egs;
+            $list['codeName'] = $product->name_en;
+            $list['codeNameAr'] = $product->name_ar;
+            $list['activeFrom'] = $product->active_from;
+            $list['activeTo'] = $product->active_to;
+            $list['description'] = $product->desc_en;
+            $list['descriptionAr'] = $product->desc_ar;
             $list['requestReason'] = "Request reason text";
-         }
+        }
 
-      $response =  SendProducts($list);
+        $response = SendProducts($list);
 
-      if(!is_null($response)){
+        if (!is_null($response)) {
 
-      if( $response['error']){
+            if ($response['error']) {
 
-          $product->update([
-              'status' => 'Error',
-              'reason' => $response['msg']
-            ]);
+                $product->update([
+                    'status' => 'Error',
+                    'reason' => $response['msg'],
+                ]);
 
-      }else{
+            } else {
 
-        $product->update(['status' => 'Submitted']);
+                $product->update(['status' => 'Submitted']);
 
-      }
+            }
 
-      session()->flash('message', 'Submitted Successfully');
+            session()->flash('message', 'Submitted Successfully');
 
-       return redirect()->back();
+            return redirect()->back();
 
-    }else{
+        } else {
 
-
-        return redirect()->back()->withErrors('Code Error');
-    }
-
-
+            return redirect()->back()->withErrors('Code Error');
+        }
 
     }
-
-
 
     public function rejected()
     {
-       $products = Products::whereStatus('Error')->latest()->get();
+        $products = Products::whereStatus('Error')->latest()->get();
 
-       return view('products.rejected', compact('products'));
+        return view('products.rejected', compact('products'));
 
     }
 
-
     public function active()
     {
-       $products = Products::whereStatus('Approved')->latest()->get();
+        $products = Products::whereStatus('Approved')->latest()->get();
 
-       return view('products.active', compact('products'));
+        return view('products.active', compact('products'));
 
     }
 
     public function pending()
     {
-       $products = Products::whereStatus('Submitted')->latest()->get();
+        $products = Products::whereStatus('Submitted')->latest()->get();
 
-       return view('products.pending', compact('products'));
+        return view('products.pending', compact('products'));
 
     }
 

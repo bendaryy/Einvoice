@@ -16,8 +16,8 @@ class manageDoucumentController extends Controller
         $setting = Apisetting::first();
         $response = Http::asForm()->post('https://id.preprod.eta.gov.eg/connect/token', [
             'grant_type' => 'client_credentials',
-            'client_id' => $setting->client_id,
-            'client_secret' => $setting->secret_id,
+            'client_id' =>  auth()->user()->details->client_id,
+            'client_secret' =>  auth()->user()->details->client_secret,
             'scope' => "InvoicingAPI",
         ]);
 

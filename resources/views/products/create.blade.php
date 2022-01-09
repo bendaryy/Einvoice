@@ -99,13 +99,13 @@ ss
                             <label for="active_to" class="form-label">@lang("site.active_to")</label>
                             <input type="date" class="form-control" id="desc_en" name="active_to" value="{{ old('active_to') }}">
                         </div>
-                        <div class="col-md-6">
+                        {{--  <div class="col-md-6">
                             <label for="active_to" class="form-label">@lang("site.price")</label>
                             <div class="input-group mb-3"> <span class="input-group-text">$</span>
-                                <input type="number" class="form-control" aria-label="Amount (to the nearest dollar)" value="{{ old('price') }}" name="price" required> <span class="input-group-text">.00</span>
+                                <input type="number" class="form-control" aria-label="Amount (to the nearest dollar)" value="{{ old('price') }}" name="price" > <span class="input-group-text">.00</span>
                             </div>
 
-                        </div>
+                        </div>  --}}
 
 
                         <div class="col-12">

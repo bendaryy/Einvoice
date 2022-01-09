@@ -27,7 +27,7 @@ class ApisettingController extends Controller
      */
     public function edit($id)
     {
-        $setting = Apisetting::first();
+        $setting = Details::first();
 
         return view('apisetting.edit', compact('setting'));
     }
@@ -45,11 +45,13 @@ class ApisettingController extends Controller
         $request->validate([
 
             'client_id'         => 'required',
-            'secret_id'         => 'required',
-            'commercial_number' => 'required',
+            'client_secret'         => 'required',
+            'company_id' => 'required',
+            'company_name' => 'required',
+            'governate' => 'required',
         ]);
 
-        $setting = Apisetting::first();
+        $setting = Details::first();
 
         $setting->update($request->all());
 

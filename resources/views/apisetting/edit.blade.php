@@ -43,19 +43,31 @@
                          @method('PUT')
 
                         <div class="col-md-6">
+                            <label for="inputEmail" class="form-label">@lang("site.name")</label>
+                            <input type="text" required class="form-control" id="inputEmail" name="company_name"
+                                value="{{ $setting->company_name }}">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="inputEmail" class="form-label">@lang("site.governate")</label>
+                            <input type="text" required class="form-control" id="inputEmail" name="governate"
+                                value="{{ $setting->governate }}">
+                        </div>
+
+                        <div class="col-md-6">
                             <label for="inputFirstName" class="form-label">@lang("site.client_id")</label>
                             <input type="text" required class="form-control" id="inputFirstName" name="client_id" value="{{ $setting->client_id }}">
                         </div>
 
                         <div class="col-md-6">
                             <label for="inputLastName" class="form-label">@lang("site.secret_id")</label>
-                            <input type="text" class="form-control" id="inputLastName" name="secret_id" value="{{ $setting->secret_id }}">
+                            <input type="text" class="form-control" id="inputLastName" name="client_secret" value="{{ $setting->client_secret }}">
                         </div>
 
                         <div class="col-md-6">
                             <label for="inputEmail" class="form-label">@lang("site.commerial_num")</label>
-                            <input type="text" required class="form-control" id="inputEmail" name="commercial_number" value="{{ $setting->commercial_number }}">
+                            <input type="text" required class="form-control" id="inputEmail" name="company_id" value="{{ $setting->company_id }}">
                         </div>
+
 
                         <div class="col-12">
                             <button type="submit" class="btn btn-primary px-5">@lang('site.save')</button>

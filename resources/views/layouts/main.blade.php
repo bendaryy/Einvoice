@@ -71,7 +71,7 @@
 
                 <li> <a href="{{ route('products.index')}}">
                     <div class="parent-icon"><i class='bx bx-cube-alt'></i></div>
-                    <div class="menu-title">@lang('site.all_products')</div>
+                    <div class="menu-title"> @lang('site.Pending Products')</div>
                   </a>
                 </li>
                 <li> <a href="{{ route('products.create')}}">
@@ -89,7 +89,7 @@
                     </a> </li>
                 <li> <a  href="{{ route('pending') }}">
                      <div class="parent-icon"><i class='bx bx-timer'></i></div>
-                     <div class="menu-title"> @lang('site.Pending Products')</div>
+                   <div class="menu-title">@lang('site.all_products')</div>
                      </a></li>
                 <li> <a href="{{ route('rejected') }}">
                     <div class="parent-icon"><i class='bx bx-eraser'></i></div>
