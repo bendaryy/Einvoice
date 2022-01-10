@@ -16,8 +16,8 @@ class manageDoucumentController extends Controller
         $setting = Apisetting::first();
         $response = Http::asForm()->post('https://id.preprod.eta.gov.eg/connect/token', [
             'grant_type' => 'client_credentials',
-            'client_id' =>  auth()->user()->details->client_id,
-            'client_secret' =>  auth()->user()->details->client_secret,
+            'client_id' => auth()->user()->details->client_id,
+            'client_secret' => auth()->user()->details->client_secret,
             'scope' => "InvoicingAPI",
         ]);
 
@@ -229,24 +229,115 @@ class manageDoucumentController extends Controller
 // this is for create page of invoice
     public function createInvoice()
     {
-        $codes = DB::table('products')->where('status','Approved')->get();
+        $response = Http::asForm()->post('https://id.preprod.eta.gov.eg/connect/token', [
+            'grant_type' => 'client_credentials',
+            'client_id' => auth()->user()->details->client_id,
+            'client_secret' => auth()->user()->details->client_secret,
+            'scope' => "InvoicingAPI",
+        ]);
+
+        $product = Http::withHeaders([
+            "Authorization" => 'Bearer ' . $response['access_token'],
+            "Content-Type" => "application/json",
+        ])->get('https://api.preprod.invoicing.eta.gov.eg/api/v1.0/codetypes/requests/my?Active=true&Status=Approved&PS=1000');
+
+        $products = $product['result'];
+        $codes = DB::table('products')->where('status', 'Approved')->get();
         $ActivityCodes = DB::table('activity_code')->get();
         $allCompanies = DB::table('companies2')->get();
         $taxTypes = DB::table('taxtypes')->get();
-        return view('invoices.createInvoice2', compact('allCompanies', 'codes', 'ActivityCodes', 'taxTypes'));
+        return view('invoices.createInvoice2', compact('allCompanies', 'codes', 'ActivityCodes', 'taxTypes', 'products'));
     }
 
     // this function for Fill  the customer information
 
     public function createInvoice2(Request $request)
     {
-        $codes = DB::table('products')->where('status','Approved')->get();
+
+        $response = Http::asForm()->post('https://id.preprod.eta.gov.eg/connect/token', [
+            'grant_type' => 'client_credentials',
+            'client_id' => auth()->user()->details->client_id,
+            'client_secret' => auth()->user()->details->client_secret,
+            'scope' => "InvoicingAPI",
+        ]);
+
+        $product = Http::withHeaders([
+            "Authorization" => 'Bearer ' . $response['access_token'],
+            "Content-Type" => "application/json",
+        ])->get('https://api.preprod.invoicing.eta.gov.eg/api/v1.0/codetypes/requests/my?Active=true&Status=Approved&PS=1000');
+
+        $products = $product['result'];
+        $codes = DB::table('products')->where('status', 'Approved')->get();
         $ActivityCodes = DB::table('activity_code')->get();
         $allCompanies = DB::table('companies2')->get();
         $taxTypes = DB::table('taxtypes')->get();
         $companiess = DB::table('companies2')->where('id', $request->receiverName)->get();
-        return view('invoices.createInvoice2', compact('companiess', 'allCompanies', "codes", 'ActivityCodes', 'taxTypes'));
+        return view('invoices.createInvoice2', compact('companiess', 'allCompanies', "codes", 'ActivityCodes', 'taxTypes',"products"));
     }
+
+
+
+
+    public function createInvoice3()
+    {
+        $response = Http::asForm()->post('https://id.preprod.eta.gov.eg/connect/token', [
+            'grant_type' => 'client_credentials',
+            'client_id' => auth()->user()->details->client_id,
+            'client_secret' => auth()->user()->details->client_secret,
+            'scope' => "InvoicingAPI",
+        ]);
+
+        $product = Http::withHeaders([
+            "Authorization" => 'Bearer ' . $response['access_token'],
+            "Content-Type" => "application/json",
+        ])->get('https://api.preprod.invoicing.eta.gov.eg/api/v1.0/codetypes/requests/my?Active=true&Status=Approved&PS=1000');
+
+        $products = $product['result'];
+        $codes = DB::table('products')->where('status', 'Approved')->get();
+        $ActivityCodes = DB::table('activity_code')->get();
+        $allCompanies = DB::table('companies2')->get();
+        $taxTypes = DB::table('taxtypes')->get();
+        return view('invoices.createInvoice3', compact('allCompanies', 'codes', 'ActivityCodes', 'taxTypes', 'products'));
+    }
+
+    // this function for Fill  the customer information
+
+    public function createInvoice4(Request $request)
+    {
+
+        $response = Http::asForm()->post('https://id.preprod.eta.gov.eg/connect/token', [
+            'grant_type' => 'client_credentials',
+            'client_id' => auth()->user()->details->client_id,
+            'client_secret' => auth()->user()->details->client_secret,
+            'scope' => "InvoicingAPI",
+        ]);
+
+        $product = Http::withHeaders([
+            "Authorization" => 'Bearer ' . $response['access_token'],
+            "Content-Type" => "application/json",
+        ])->get('https://api.preprod.invoicing.eta.gov.eg/api/v1.0/codetypes/requests/my?Active=true&Status=Approved&PS=1000');
+
+        $products = $product['result'];
+        $codes = DB::table('products')->where('status', 'Approved')->get();
+        $ActivityCodes = DB::table('activity_code')->get();
+        $allCompanies = DB::table('companies2')->get();
+        $taxTypes = DB::table('taxtypes')->get();
+        $companiess = DB::table('companies2')->where('id', $request->receiverName)->get();
+        return view('invoices.createInvoice3', compact('companiess', 'allCompanies', "codes", 'ActivityCodes', 'taxTypes',"products"));
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // show pdf printout
     public function showPdfInvoice($uuid)

@@ -566,9 +566,9 @@
                         <td>
                             <select name="itemCode[]" id="itemCode" class="form-control form-control-sm form-select">
                                 <option disabled selected>اختر النشاط</option>
-                                @foreach ($codes as $code)
-                                <option value="{{ $code->egs }}" style="font-size: 20px">{{ $code->desc_ar }} - {{
-                                    $code->desc_en }}
+                                @foreach ($products as $product)
+                                <option value="{{ $product['itemCode'] }}" style="font-size: 20px">
+                                    {{$product['codeNameSecondaryLang']}}
                                     @endforeach
                             </select>
                         </td>
@@ -760,10 +760,9 @@
                             <td>
                                 <select name="itemCode[]" id="itemCode" class="form-control form-control-sm form-select">
 
-                                @foreach ($codes as $code)
-                                <option disabled selected>اختر النشاط</option>
-                                <option value="{{ $code->egs }}" style="font-size: 20px">{{ $code->desc_ar }} - {{
-                                    $code->desc_en }}
+                                    <option disabled selected>اختر النشاط</option>
+                               @foreach ($products as $product)
+                                <option value="{{ $product['itemCode'] }}" style="font-size: 20px">{{ $product['codeNameSecondaryLang']}}
                                     @endforeach
                                 </select>
                             </td>

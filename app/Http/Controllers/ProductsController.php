@@ -7,7 +7,6 @@ use App\Models\Products;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
-
 class ProductsController extends Controller
 {
     /**
@@ -17,23 +16,7 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        $response = Http::asForm()->post('https://id.preprod.eta.gov.eg/connect/token', [
-            'grant_type' => 'client_credentials',
-            'client_id' => auth()->user()->details->client_id,
-            'client_secret' => auth()->user()->details->client_secret,
-            'scope' => "InvoicingAPI",
-        ]);
 
-        $product = Http::withHeaders([
-            "Authorization" => 'Bearer ' . $response['access_token'],
-            "Content-Type" => "application/json",
-        ])->get('https://api.preprod.invoicing.eta.gov.eg/api/v1.0/codetypes/requests/my?Active=true&Status=Submitted&PageSize=20');
-
-// return $product['result'];
-        // $products = Products::latest()->get();
-        $products = $product['result'];
-
-        return view('products.index', compact('products'));
 
     }
 
@@ -56,62 +39,92 @@ class ProductsController extends Controller
     public function store(Request $request)
     {
 
+        // $addProduct = [
+        //     "items" => [[
+        //         "codeType" => "EGS",
+        //         "itemCode" => "EG-" . auth()->user()->details->company_id . '-' . $request->egs,
+        //         "parentCode" => $request->gpc,
+        //         "codeName" => $request->name_en,
+        //         "codeNameAr" => $request->name_ar,
+        //         "activeFrom" => $request->active_from,
+        //         "activeTo" => $request->active_to,
+        //         "description" => $request->desc_en,
+        //         "descriptionAr" => $request->desc_ar,
+        //         "requestReason" => "Request reason text",
+        //     ]],
 
+        // ];
 
-// $response = Http::asForm()->post('https://id.preprod.eta.gov.eg/connect/token', [
-//     'grant_type' => 'client_credentials',
-//     'client_id' => auth()->user()->details->client_id,
-//     'client_secret' => auth()->user()->details->client_secret,
-//     'scope' => "InvoicingAPI",
-// ]);
+        // $encode = strin($addProduct);
 
-// $addProduct = [
-//     "items" => [[
-//         "codeType" => "EGS",
-//         "itemCode" => "EG-" . auth()->user()->details->company_id . '-' . $request->egs,
-//         "parentCode" => $request->gpc,
-//         "codeName" => $request->name_en,
-//         "codeNameAr" => $request->name_ar,
-//         "activeFrom" => $request->active_from,
-//         "activeTo" => $request->active_to,
-//         "description" => $request->desc_en,
-//         "descriptionAr" => $request->desc_ar,
-//         "requestReason" => "Request reason text",
-//     ]],
+        // $addProductJson = file_get_contents($encode);
 
-// ];
+// $input = $request->except(['egs']);
 
-// $product = Http::withHeaders([
-//     "Authorization" => 'Bearer ' . $response['access_token'],
-//     "Content-Type" => "application/json",
-// ])->withBody($addProduct, "application/json")->post('https://api.preprod.invoicing.eta.gov.eg/api/v1.0/codetypes/requests/codes');
+// $tax = Apisetting::first();
 
-// return $addProduct;
+// $input['egs'] = 'EG-' . $tax->commercial_number . '-' . $request->egs;
 
+// $input['code'] = $request->egs;
 
+// Products::create($input);
+
+// return redirect('products');
+
+        $response = Http::asForm()->post('https://id.preprod.eta.gov.eg/connect/token', [
+            'grant_type' => 'client_credentials',
+            'client_id' => auth()->user()->details->client_id,
+            'client_secret' => auth()->user()->details->client_secret,
+            'scope' => "InvoicingAPI",
+        ]);
 
         $request->validate([
-            'name_ar' => 'required|min:3|unique:products,name_ar',
-            'name_en' => 'required|min:3|unique:products,name_en',
+            'name_ar' => 'required|min:3',
+            'name_en' => 'required|min:3',
             'desc_ar' => 'required|min:5',
             'desc_en' => 'required|min:5',
             'active_from' => 'required|date',
-            'price' => 'required|numeric',
-            'gpc' => 'required|numeric|min:8|exists:categories,code',
-            'egs' => 'required|numeric|unique:products,code',
+            // 'price' => 'required|numeric',
+            'gpc' => 'required|numeric|min:8',
+            'egs' => 'required',
         ]);
 
-        $input = $request->except(['egs']);
+        $addProduct = '{
+            "items": [
 
-        $tax = Apisetting::first();
+                {
+                    "codeType": "' . "EGS" . '",
+                    "parentCode": "' . $request->gpc . '",
+                    "itemCode": "' . "EG-" . auth()->user()->details->company_id . '-' . $request->egs . '",
+                    "codeName": "' . $request->name_en . '",
+                    "codeNameAr": "' . $request->name_ar . '",
+                    "activeFrom": "' . $request->active_from . '",
+                    "activeTo": "' . $request->active_to . '",
+                    "description": "' . $request->desc_en . '",
+                    "descriptionAr": "' . $request->desc_ar . '",
+                    "requestReason": "' . "Request reason text" . '",
+                },
 
-        $input['egs'] = 'EG-' . $tax->commercial_number . '-' . $request->egs;
+            ]
+        }';
 
-        $input['code'] = $request->egs;
+        $product = Http::withHeaders([
+            "Authorization" => 'Bearer ' . $response['access_token'],
+            "Content-Type" => "application/json",
+        ])->withBody($addProduct, "application/json")->post('https://api.preprod.invoicing.eta.gov.eg/api/v1.0/codetypes/requests/codes');
 
-        Products::create($input);
+        // return  $product['failedItems'][0]['errors'][0];
+        // return $product;
 
-        return redirect('products');
+        if ($product["passedItemsCount"] === 0) {
+            return redirect()->route('pending')->with('error', $product['failedItems'][0]['errors'][0]);
+
+        }
+        if ($product["passedItemsCount"] > 0) {
+            return redirect()->route('pending')->with('success', "تم ارسال المنتج (قيد الإنتظار)" . ' ' . ($product['passedItems'][0]['itemCode']));
+
+        }
+
     }
 
     /**
@@ -265,7 +278,22 @@ class ProductsController extends Controller
 
     public function active()
     {
-        $products = Products::whereStatus('Approved')->latest()->get();
+        // $products = Products::whereStatus('Approved')->latest()->get();
+
+        $response = Http::asForm()->post('https://id.preprod.eta.gov.eg/connect/token', [
+            'grant_type' => 'client_credentials',
+            'client_id' => auth()->user()->details->client_id,
+            'client_secret' => auth()->user()->details->client_secret,
+            'scope' => "InvoicingAPI",
+        ]);
+
+        $product = Http::withHeaders([
+            "Authorization" => 'Bearer ' . $response['access_token'],
+            "Content-Type" => "application/json",
+        ])->get('https://api.preprod.invoicing.eta.gov.eg/api/v1.0/codetypes/requests/my?Active=true&Status=Approved&PS=1000');
+
+
+        $products = $product['result'];
 
         return view('products.active', compact('products'));
 
@@ -273,7 +301,23 @@ class ProductsController extends Controller
 
     public function pending()
     {
-        $products = Products::whereStatus('Submitted')->latest()->get();
+        // $products = Products::whereStatus('Submitted')->latest()->get();
+
+        $response = Http::asForm()->post('https://id.preprod.eta.gov.eg/connect/token', [
+            'grant_type' => 'client_credentials',
+            'client_id' => auth()->user()->details->client_id,
+            'client_secret' => auth()->user()->details->client_secret,
+            'scope' => "InvoicingAPI",
+        ]);
+
+        $product = Http::withHeaders([
+            "Authorization" => 'Bearer ' . $response['access_token'],
+            "Content-Type" => "application/json",
+        ])->get('https://api.preprod.invoicing.eta.gov.eg/api/v1.0/codetypes/requests/my?Active=true&Status=Submitted&PS=1000');
+
+// return $product['result'];
+        // $products = Products::latest()->get();
+        $products = $product['result'];
 
         return view('products.pending', compact('products'));
 

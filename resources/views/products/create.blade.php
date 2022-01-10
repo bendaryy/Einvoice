@@ -35,77 +35,90 @@ ss
                     <div class="card-title">
                         <div class="row">
                             <div class="col-md-4">
-                        <div><i class="bx bxs-user me-1 font-22 text-primary"></i></div>
-                        <h5 class="mb-0 text-primary">@lang("site.create_product")</h5>
+                                <div><i class="bx bxs-user me-1 font-22 text-primary"></i></div>
+                                <h5 class="mb-0 text-primary">@lang("site.create_product")</h5>
                             </div>
-                     <div class="col-md-8">
-                        <div class="category-data" style="text-align: left">
-                        <h6 id="category-status"> </h6>
-                        <h6 id="category-title" class="text-success"> </h6>
-                        <p id="category-includes"> </p>
-                        <p id="category-excludes"> </p>
+                            <div class="col-md-8">
+                                <div class="category-data" style="text-align: left">
+                                    <h6 id="category-status"> </h6>
+                                    <h6 id="category-title" class="text-success"> </h6>
+                                    <p id="category-includes"> </p>
+                                    <p id="category-excludes"> </p>
+                                </div>
+                            </div>
                         </div>
-                        </div>
-                    </div>
                     </div>
                     <hr>
 
-                    <form class="row g-3" method="post" action="{{ route('products.store') }}" enctype="multipart/form-data">
+                    <form class="row g-3" method="post" action="{{ route('products.store') }}"
+                        enctype="multipart/form-data">
                         @csrf
 
                         <div class="col-md-6">
                             <label for="egs-code" class="form-label">@lang("site.egs-code")</label>
-                            <div class="input-group input-group-default"> <span class="input-group-text" id="inputGroup-sizing-default">EG-{{ $setting->commercial_number }}</span>
-                                <input name="egs" required type="text" id="egs-code" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                            <div class="input-group input-group-default"> <span class="input-group-text"
+                                    id="inputGroup-sizing-default">EG-{{ $setting->commercial_number }}</span>
+                                <input name="egs" required type="text" id="egs-code" class="form-control"
+                                    aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
                             </div>
 
-                         </div>
+                        </div>
 
-                         <div class="col-md-6">
-                            <label for="gpc-input" class="form-label">@lang("site.gpc_code") <span class="text-secondary"> 99999999 </span></label>
-                             <div class="input-group mb-3">
-                                <input type="text" required class="form-control" id="gpc-input" name="gpc" value="{{ old('gpc') }}" aria-describedby="gpc-button">
-                                <button class="btn btn-info" type="button" id="gpc-button"><i style="margin-top: -12px;" class="bx bx-search-alt"></i></button>
+                        <div class="col-md-6">
+                            <label for="gpc-input" class="form-label">@lang("site.gpc_code") <span
+                                    class="text-secondary"> 99999999 </span></label>
+                            <div class="input-group mb-3">
+                                <input type="text" required class="form-control" id="gpc-input" name="gpc"
+                                    value="{{ old('gpc') }}" aria-describedby="gpc-button">
+                                <button class="btn btn-info" type="button" id="gpc-button"><i style="margin-top: -12px;"
+                                        class="bx bx-search-alt"></i></button>
                             </div>
                         </div>
 
-                         <div class="col-md-6">
+                        <div class="col-md-6">
                             <label for="inputFirstName" class="form-label">@lang("site.name_ar")</label>
-                            <input type="text" required class="form-control" id="inputFirstName" name="name_ar" value="{{ old('name_ar') }}">
+                            <input type="text" required class="form-control" id="inputFirstName" name="name_ar"
+                                value="{{ old('name_ar') }}">
                         </div>
 
 
                         <div class="col-md-6">
                             <label for="inputLastName" class="form-label">@lang("site.name_en")</label>
-                            <input type="text" class="form-control" id="inputLastName" name="name_en" value="{{ old('name_en') }}" required>
+                            <input type="text" class="form-control" id="inputLastName" name="name_en"
+                                value="{{ old('name_en') }}" required>
                         </div>
 
-                         <div class="col-md-6">
+                        <div class="col-md-6">
                             <label for="desc_ar" class="form-label">@lang("site.desc_ar")</label>
-                            <input type="text" required class="form-control" id="desc_ar" name="desc_ar" required value="{{ old('desc_ar') }}">
+                            <input type="text" required class="form-control" id="desc_ar" name="desc_ar" required
+                                value="{{ old('desc_ar') }}">
                         </div>
 
 
                         <div class="col-md-6">
                             <label for="desc_en" class="form-label">@lang("site.desc_en")</label>
-                            <input type="text" class="form-control" id="desc_en" name="desc_en" required value="{{ old('desc_en') }}">
+                            <input type="text" class="form-control" id="desc_en" name="desc_en" required
+                                value="{{ old('desc_en') }}">
                         </div>
 
                         <div class="col-md-6">
                             <label for="active_from" class="form-label">@lang("site.active_from")</label>
-                            <input type="date" class="form-control" id="active_from" name="active_from" required value="{{ old('active_from') }}">
+                            <input type="date" class="form-control" id="active_from" name="active_from" required
+                                value="">
                         </div>
                         <div class="col-md-6">
                             <label for="active_to" class="form-label">@lang("site.active_to")</label>
-                            <input type="date" class="form-control" id="desc_en" name="active_to" value="{{ old('active_to') }}">
+                            <input type="date" class="form-control" id="desc_en" name="active_to"
+                                value="">
                         </div>
-                        {{--  <div class="col-md-6">
+                        {{-- <div class="col-md-6">
                             <label for="active_to" class="form-label">@lang("site.price")</label>
                             <div class="input-group mb-3"> <span class="input-group-text">$</span>
-                                <input type="number" class="form-control" aria-label="Amount (to the nearest dollar)" value="{{ old('price') }}" name="price" > <span class="input-group-text">.00</span>
+                                <input type="number" class="form-control" aria-label="Amount (to the nearest dollar)"
+                                    value="{{ old('price') }}" name="price"> <span class="input-group-text">.00</span>
                             </div>
 
-                        </div>  --}}
+                        </div> --}}
 
 
                         <div class="col-12">
@@ -125,10 +138,7 @@ ss
 @endsection
 
 @push('js')
-
 <script>
-
-
     $("#gpc-button").on('click', function () {
 
         var code = $("#gpc-input").val();

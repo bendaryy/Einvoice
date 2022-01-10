@@ -101,7 +101,7 @@
 </h2>
 @if(request()->routeIs('createInvoice'))
 <a href="{{ route('customer.create') }}" class="btn btn-info" style="margin-right: 50px">
-اضافة عميل
+    اضافة عميل
 </a>
 <form action="{{route('createInvoice2')}}" method="GET">
     <div class="card col-md-6 text-center" style="margin: auto;margin-bottom: 50px">
@@ -200,23 +200,25 @@
                     <div class="form-group row">
                         <label class="form-label">اسم المنطقة</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control form-control-sm text-center" name="receiverRegionCity"
-                                placeholder="اسم المنطقة" value="{{ $com->regionCity }}">
+                            <input type="text" class="form-control form-control-sm text-center"
+                                name="receiverRegionCity" placeholder="اسم المنطقة" value="{{ $com->regionCity }}">
                         </div>
                     </div>
 
                     <div class="form-group row">
                         <label class="form-label">اسم الشارع </label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control form-control-sm text-center" name="street" placeholder="الشارع" value="{{ $com->street }}">
+                            <input type="text" class="form-control form-control-sm text-center" name="street"
+                                placeholder="الشارع" value="{{ $com->street }}">
                         </div>
                     </div>
 
                     <div class="form-group row">
                         <label class="form-label">رقم المبنى</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control form-control-sm text-center" name="receiverBuildingNumber"
-                                placeholder="رقم المبنى" value="{{ $com->buildingNumber }}">
+                            <input type="text" class="form-control form-control-sm text-center"
+                                name="receiverBuildingNumber" placeholder="رقم المبنى"
+                                value="{{ $com->buildingNumber }}">
                         </div>
                     </div>
 
@@ -224,8 +226,9 @@
                     <div class="form-group row">
                         <label class="form-label"> الرقم البريدى (اختيارى)</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control form-control-sm text-center" name="receiverPostalCode"
-                                placeholder="الرقم البريدى (اختيارى) " value="{{ $com->postalCode }}">
+                            <input type="text" class="form-control form-control-sm text-center"
+                                name="receiverPostalCode" placeholder="الرقم البريدى (اختيارى) "
+                                value="{{ $com->postalCode }}">
                         </div>
                     </div>
 
@@ -258,8 +261,9 @@
                     <div class="form-group row">
                         <label class="form-label"> بيانات إضافية (اختيارى)</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control form-control-sm text-center" name="receiverAdditionalInformation"
-                                placeholder="(اختيارى) بيانات إضافية " value="{{ $com->additionalInformation }}">
+                            <input type="text" class="form-control form-control-sm text-center"
+                                name="receiverAdditionalInformation" placeholder="(اختيارى) بيانات إضافية "
+                                value="{{ $com->additionalInformation }}">
                         </div>
                     </div>
 
@@ -278,86 +282,94 @@
                         <div class="form-group row">
                             <label class="form-label">الرقم الضريبى / الرقم القومى</label>
                             <div class="col-sm-9">
-                                <input type="number" style="width:350px" class="form-control form-control-sm text-center" name="receiverId"
+                                <input type="number" style="width:350px"
+                                    class="form-control form-control-sm text-center" name="receiverId"
                                     placeholder="الرقم الضريبى">
                             </div>
                         </div>
 
-                    <div class="form-group row">
-                        <label class="form-label">اسم البلد</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control form-control-sm text-center" name="receiverCountry"
-                                placeholder="اسم البلد">
+                        <div class="form-group row">
+                            <label class="form-label">اسم البلد</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control form-control-sm text-center"
+                                    name="receiverCountry" placeholder="اسم البلد">
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group row">
-                        <label class="form-label">اسم المحافظة</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control form-control-sm text-center" name="receiverGovernate"
-                                placeholder="اسم المحافظة">
+                        <div class="form-group row">
+                            <label class="form-label">اسم المحافظة</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control form-control-sm text-center"
+                                    name="receiverGovernate" placeholder="اسم المحافظة">
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group row">
-                        <label class="form-label">اسم المنطقة</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control form-control-sm text-center" name="receiverRegionCity"
-                                placeholder="اسم المنطقة">
+                        <div class="form-group row">
+                            <label class="form-label">اسم المنطقة</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control form-control-sm text-center"
+                                    name="receiverRegionCity" placeholder="اسم المنطقة">
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group row">
-                        <label class="form-label">اسم الشارع </label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control form-control-sm text-center" name="street" placeholder="الشارع">
+                        <div class="form-group row">
+                            <label class="form-label">اسم الشارع </label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control form-control-sm text-center" name="street"
+                                    placeholder="الشارع">
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group row">
-                        <label class="form-label">رقم المبنى</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control form-control-sm text-center" name="receiverBuildingNumber" placeholder="رقم المبنى">
+                        <div class="form-group row">
+                            <label class="form-label">رقم المبنى</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control form-control-sm text-center"
+                                    name="receiverBuildingNumber" placeholder="رقم المبنى">
+                            </div>
                         </div>
-                    </div>
 
 
-                    <div class="form-group row">
-                        <label class="form-label"> الرقم البريدى (اختيارى)</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control form-control-sm text-center" name="receiverPostalCode" placeholder="الرقم البريدى (اختيارى) ">
+                        <div class="form-group row">
+                            <label class="form-label"> الرقم البريدى (اختيارى)</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control form-control-sm text-center"
+                                    name="receiverPostalCode" placeholder="الرقم البريدى (اختيارى) ">
+                            </div>
                         </div>
-                    </div>
 
 
-                    <div class="form-group row">
-                        <label class="form-label">  الدور (اختيارى)</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control form-control-sm text-center" name="receiverFloor" placeholder="  (اختيارى) الدور">
+                        <div class="form-group row">
+                            <label class="form-label"> الدور (اختيارى)</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control form-control-sm text-center" name="receiverFloor"
+                                    placeholder="  (اختيارى) الدور">
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group row">
-                        <label class="form-label">  الغرفة (اختيارى)</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control form-control-sm text-center" name="receiverRoom" placeholder="(اختيارى) الغرفة">
+                        <div class="form-group row">
+                            <label class="form-label"> الغرفة (اختيارى)</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control form-control-sm text-center" name="receiverRoom"
+                                    placeholder="(اختيارى) الغرفة">
+                            </div>
                         </div>
-                    </div>
 
 
-                    <div class="form-group row">
-                        <label class="form-label">  علامة مميزة (اختيارى)</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control form-control-sm text-center" name="receiverLandmark" placeholder="(اختيارى) علامة مميزة">
+                        <div class="form-group row">
+                            <label class="form-label"> علامة مميزة (اختيارى)</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control form-control-sm text-center"
+                                    name="receiverLandmark" placeholder="(اختيارى) علامة مميزة">
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group row">
-                        <label class="form-label">   بيانات إضافية (اختيارى)</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control form-control-sm text-center" name="receiverAdditionalInformation" placeholder="(اختيارى) بيانات إضافية ">
+                        <div class="form-group row">
+                            <label class="form-label"> بيانات إضافية (اختيارى)</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control form-control-sm text-center"
+                                    name="receiverAdditionalInformation" placeholder="(اختيارى) بيانات إضافية ">
+                            </div>
                         </div>
-                    </div>
 
 
 
@@ -369,54 +381,54 @@
                         <h6 style="text-align: center;">جميع بيانات البنك إختيارية</h6>
 
 
-                    <div class="form-group row">
-                        <label class="form-label"> اسم البنك (اختيارى)</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control form-control-sm text-center" name="bankName"
-                                placeholder="  (اختيارى) اسم البيك">
+                        <div class="form-group row">
+                            <label class="form-label"> اسم البنك (اختيارى)</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control form-control-sm text-center" name="bankName"
+                                    placeholder="  (اختيارى) اسم البيك">
+                            </div>
                         </div>
-                    </div>
 
 
-                    <div class="form-group row">
-                        <label class="form-label"> عنوان البنك(اختيارى)</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control form-control-sm text-center" name="bankAddress"
-                                placeholder="  (اختيارى)عنوان البيك">
+                        <div class="form-group row">
+                            <label class="form-label"> عنوان البنك(اختيارى)</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control form-control-sm text-center" name="bankAddress"
+                                    placeholder="  (اختيارى)عنوان البيك">
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group row">
-                        <label class="form-label"> رقم الحساب البنكى(اختيارى)</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control form-control-sm text-center" name="bankAccountNo"
-                                placeholder="  (اختيارى)رقم الحساب البنكى">
+                        <div class="form-group row">
+                            <label class="form-label"> رقم الحساب البنكى(اختيارى)</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control form-control-sm text-center" name="bankAccountNo"
+                                    placeholder="  (اختيارى)رقم الحساب البنكى">
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group row">
-                        <label class="form-label"> IBAN الحساب البنكى(اختيارى)</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control form-control-sm text-center" name="bankAccountIBAN"
-                                placeholder="  (اختيارى)IBAN الحساب البنكى">
+                        <div class="form-group row">
+                            <label class="form-label"> IBAN الحساب البنكى(اختيارى)</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control form-control-sm text-center"
+                                    name="bankAccountIBAN" placeholder="  (اختيارى)IBAN الحساب البنكى">
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group row">
-                        <label class="form-label">   رمز السرعة(اختيارى)</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control form-control-sm text-center" name="swiftCode"
-                                placeholder="  (اختيارى)رمز السرعة">
+                        <div class="form-group row">
+                            <label class="form-label"> رمز السرعة(اختيارى)</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control form-control-sm text-center" name="swiftCode"
+                                    placeholder="  (اختيارى)رمز السرعة">
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group row">
-                        <label class="form-label">   المصطلحات(اختيارى)</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control form-control-sm text-center" name="Bankterms"
-                                placeholder="  (اختيارى)المصطلحات">
+                        <div class="form-group row">
+                            <label class="form-label"> المصطلحات(اختيارى)</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control form-control-sm text-center" name="Bankterms"
+                                    placeholder="  (اختيارى)المصطلحات">
+                            </div>
                         </div>
-                    </div>
 
 
 
@@ -554,17 +566,17 @@
                         <td>
                             <select name="itemCode[]" id="itemCode" class="form-control form-control-sm form-select">
                                 <option disabled selected>اختر النشاط</option>
-                                @foreach ($codes as $code)
-                                <option value="{{ $code->egs }}" style="font-size: 20px">{{ $code->desc_ar }} - {{
-                                    $code->desc_en }}
+                                @foreach ($products as $product)
+                                <option value="{{ $product['itemCode'] }}" style="font-size: 20px">
+                                    {{$product['codeNameSecondaryLang']}}
                                     @endforeach
                             </select>
                         </td>
                         <td>
                             <input type="number" width="1px" name="t4rate[]" id="t4rate" onkeyup="findTotalt4Amount()"
                                 onmouseover="findTotalt4Amount()" style="margin-bottom: 5px">
-                            <select name="t4subtype[]" required  id="t4subtype" class="form-control form-control-sm form-select"
-                                style="width: 150px">
+                            <select name="t4subtype[]" required id="t4subtype"
+                                class="form-control form-control-sm form-select" style="width: 150px">
                                 <option disabled selected style="font-size: 15px;width: 100px;">نوع الضريبة (t4)
                                 </option>
                                 @foreach ($taxTypes as $type)
@@ -748,10 +760,9 @@
                             <td>
                                 <select name="itemCode[]" id="itemCode" class="form-control form-control-sm form-select">
 
-                                @foreach ($codes as $code)
-                                <option disabled selected>اختر النشاط</option>
-                                <option value="{{ $code->egs }}" style="font-size: 20px">{{ $code->desc_ar }} - {{
-                                    $code->desc_en }}
+                                    <option disabled selected>اختر النشاط</option>
+                               @foreach ($products as $product)
+                                <option value="{{ $product['itemCode'] }}" style="font-size: 20px">{{ $product['codeNameSecondaryLang']}}
                                     @endforeach
                                 </select>
                             </td>
