@@ -502,20 +502,6 @@
 
             <div id="newOne">
 
-
-                {{--
-                <div class="form-group row invoice-note" style="margin-top: 40px;">
-                    <label for="invoice-detail-notes" class="text-center col-sm-12 col-form-label col-form-label-sm"
-                        style="text-align: center">وصف
-                        المنتج 1</label>
-                    <div class="col-sm-12" style="margin: 10px">
-                        <textarea class="form-control" name="invoiceDescription[]" placeholder="وصف تفصيلى  للمنتج 1"
-                            style="height: 88px;width: 360px;text-align: center;margin:auto"></textarea>
-                    </div>
-                </div> --}}
-
-
-
                 <table style="margin: auto;width: 90%;" border="1">
                     <tr style="margin: 20px;text-align:center">
                         <td colspan="8" style="margin: 20px;text-align:center;margin-right: 50px">

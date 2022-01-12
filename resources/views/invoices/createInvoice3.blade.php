@@ -15,6 +15,7 @@
     <!--end breadcrumb-->
 
     <!--Choose / Add Reciever-->
+
     <div class="card">
         <div class="card-body p-6">
             <div class="form-body mt-6">
@@ -46,31 +47,35 @@
                     </div>
                     @endif
 
+
                     <div class="col-3">
                         </br><a href="{{ route('customer.create') }}" class="btn btn-info"
                             style="margin-right: 50px;margin-top: 8px;">
                             @lang("site.addReceiver") </a> </div>
 
+                    <form method="POST" action="{{ route('storeInvoice') }}">
+                        @method("POST")
+                        @csrf
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="payment-method-country"
+                                    class="form-label">@lang("site.Reciever_type")</label>
+                                <select name="receiverType" class="form-control form-control-sm form-select">
+                                    <option value="B" style="font-size: 20px">@lang("site.Company")</option>
+                                    <option value="P" style="font-size: 20px">@lang("site.Person")</option>
+                                    <option value="F" style="font-size: 20px">@lang("site.Forign")</option>
 
-                    <div class="row">
-                        <div class="col-6">
-                            <label for="payment-method-country" class="form-label">@lang("site.Reciever_type")</label>
-                            <select name="receiverType" class="form-control form-control-sm form-select">
-                                <option value="B" style="font-size: 20px">@lang("site.Company")</option>
-                                <option value="P" style="font-size: 20px">@lang("site.Person")</option>
-                                <option value="F" style="font-size: 20px">@lang("site.Forign")</option>
-
-                            </select>
-                        </div>
-                        @if(request()->routeIs('createInvoice3'))
-                        <div class="col-6">
-                            <div class="form-group">
-                                <label for="recieverName" class="form-label">@lang("site.Reciever_Name")</label>
-                                <input type="text" class="form-control" name="receiverName" placeholder="@lang("
-                                    site.Reciever_Name")" value="">
+                                </select>
+                            </div>
+                            @if(request()->routeIs('createInvoice3'))
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="recieverName" class="form-label">@lang("site.Reciever_Name")</label>
+                                    <input type="text" class="form-control" name="receiverName" placeholder="@lang("
+                                        site.Reciever_Name")" value="">
+                                </div>
                             </div>
                         </div>
-                    </div>
                 </div>
                 <div class="row">
                     <div class="col-6">
@@ -108,14 +113,20 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-4">
                         <label for="recieverStreet" class="form-label"
                             style="margin-top:.5rem;">@lang("site.StreetName")</label>
                         <input type="text" class="form-control" name="street" placeholder="@lang(" site.StreetName")"
                             value="">
                     </div>
 
-                    <div class="col-6">
+                    <div class="col-4">
+                        <label for="recieverStreet" class="form-label" style="margin-top:.5rem;">رقم المبنى</label>
+                        <input type="text" class="form-control" name="receiverBuildingNumber" placeholder="رقم المبنى"
+                            value="">
+                    </div>
+
+                    <div class="col-4">
                         <div class="form-group">
                             <label for="receiverPostalCode" class="form-label"
                                 style="margin-top:.5rem;">@lang("site.PostalCode")</label>
@@ -208,13 +219,19 @@
     </div>
 
     <div class="row">
-        <div class="col-6">
+        <div class="col-4">
             <label for="recieverStreet" class="form-label" style="margin-top:.5rem;">@lang("site.StreetName")</label>
             <input type="text" class="form-control" name="street" placeholder="@lang(" site.StreetName")"
                 value="{{ $com->street }}">
         </div>
 
-        <div class="col-6">
+        <div class="col-4">
+            <label for="recieverStreet" class="form-label" style="margin-top:.5rem;">رقم المبنى</label>
+            <input type="text" class="form-control" name="receiverBuildingNumber" value="{{ $com->buildingNumber }}"
+                placeholder="رقم المبنى" value="">
+        </div>
+
+        <div class="col-4">
             <div class="form-group">
                 <label for="receiverPostalCode" class="form-label"
                     style="margin-top:.5rem;">@lang("site.PostalCode")</label>
@@ -300,7 +317,6 @@
                 type="button">@lang("site.Generate")</button>
 
         </div>
-
 
 
         <div class="col-6">
@@ -399,7 +415,7 @@
                     </h2>
                     <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="lineDetails"
                         data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
+                        <div class="accordion-body" id="newOne">
 
                             <div class="border border-3 p-4 rounded">
                                 <div class="mb-3">
@@ -407,8 +423,7 @@
                                         Items")</label>
 
                                     <select name="itemCode[]" id="itemCode"
-                                        class="form-control form-control-sm form-select">
-                                        <option disabled selected>اختر النشاط</option>
+                                        class="form-control form-control-sm form-select" required>
                                         @foreach ($products as $product)
                                         <option value="{{ $product['itemCode'] }}" style="font-size: 20px">
                                             {{$product['codeNameSecondaryLang']}}
@@ -424,13 +439,13 @@
                                 <div class="row g-3">
                                     <div class="col-md-6">
                                         <label for="linePrice" class="form-label">Price</label>
-                                        <input class="form-control" step="any" id="linePrice" type=number step="any"
+                                        <input class="form-control" step="any" type="number" step="any"
                                             name="amountEGP[]" id="amountEGP"
                                             onkeyup="operation(this.value),findTotalSalesAmount();;"
                                             onmouseover="operation(this.value),findTotalSalesAmount();;">
                                     </div>
                                     <div class=" col-md-6">
-                                        <label for="lineQuantity" class="form-label">Quantity</label>
+                                        <label class="form-label">Quantity</label>
                                         <input class="form-control" type="number" step="any" name="quantity[]"
                                             id="quantity" onkeyup="proccess(this.value),findTotalSalesAmount();"
                                             onmouseover="proccess(this.value),findTotalSalesAmount();">
@@ -441,45 +456,66 @@
                                         <label for="inputProductTitle" class="form-label">@lang("site.Tax
                                             added Type")</label>
 
-                                        <select name="itemCode[]" id="itemCode"
+                                        <select name="t1subtype[]" required id="t1subtype"
                                             class="form-control form-control-sm form-select">
-                                            <option disabled selected>@lang("site.Tax added Type")</option>
-                                            <option value=""></option>
+                                            <option disabled selected style="font-size: 15px;width: 100px;">نوع الضريبة
+                                            </option>
+                                            @foreach ($taxTypes as $type)
+                                            @if($type->parent === "T1")
+                                            <option value="{{ $type->code }}" style="font-size: 15px;width: 100px;">{{
+                                                $type->name_ar }}
+
+                                                @endif
+                                                @endforeach
                                         </select>
                                     </div>
                                     <div class="col-md-6">
                                         <label for="lineTaxAdd" class="form-label">@lang("site.Tax_added")</label>
-                                        <input type="number" class="form-control" id="lineTaxAdd" placeholder="@lang("
-                                            site.Tax_added")">
+                                        <input type="number" class="form-control" name="rate[]" id="rate"
+                                            class="form-control form-control-sm" onkeyup="findTotalt2Amount()"
+                                            onmouseover="findTotalt2Amount()" placeholder="@lang(" site.Tax_added")">
                                     </div>
                                 </div>
                                 <div class="row g-3">
                                     <div class="col-md-6">
                                         <label for="inputProductTitle" class="form-label">@lang("site.Tax t4
                                             Type")</label>
-                                        <select name="itemCode[]" id="itemCode"
+                                        <select name="t4subtype[]" required id="t4subtype"
                                             class="form-control form-control-sm form-select">
                                             <option disabled selected>@lang("site.Tax t4 Type")</option>
-                                            <option value=""></option>
+                                            @foreach ($taxTypes as $type)
+                                            @if($type->parent === "T4")
+                                            <option value="{{ $type->code }}" style="font-size: 15px;width: 100px;">{{
+                                                $type->name_ar }}
+
+                                                @endif
+                                                @endforeach
                                         </select>
                                     </div>
                                     <div class="col-md-6">
                                         <label for="lineTaxT4" class="form-label">@lang("site.Tax t4
                                             Value")</label>
-                                        <input type="number" class="form-control" id="lineTaxT4" placeholder="@lang("
-                                            site.Tax t4 Value")">
+                                        <input type="number" class="form-control" name="t4rate[]" id="t4rate"
+                                            onkeyup="findTotalt4Amount()" onmouseover="findTotalt4Amount()"
+                                            placeholder="@lang(" site.Tax t4 Value")">
                                     </div>
                                 </div>
                                 <div class="row g-3">
                                     <div class="col-md-6">
                                         <label for="lineDiscount" class="form-label">@lang("site.Discount")</label>
-                                        <input type="number" class="form-control" id="linePrice" placeholder=" @lang("
-                                            site.Discount")">
+
+                                        <input class="form-control" placeholder=" @lang(" site.Discount")" type="number"
+                                            step="any" name="discountAmount[]" id="discountAmount"
+                                            onkeyup="discount(this.value),findTotalDiscountAmount(),findTotalNetAmount(),findTotalt4Amount(),findTotalt2Amount()"
+                                            onmouseover="discount(this.value),findTotalDiscountAmount(),findTotalNetAmount(),findTotalt4Amount(),findTotalt2Amount()">
                                     </div>
                                     <div class="col-md-6">
                                         <label for="lineDiscountAfterTax"
                                             class="form-label">@lang("site.Discount_After_Tax") </label>
-                                        <input type="number" class="form-control" id="lineDiscountAfterTax"
+                                        <input type="number" class="form-control" step="any" name="itemsDiscount[]"
+                                            id="itemsDiscount"
+                                            onkeyup="itemsDiscountValue(this.value),findTotalAmount(),findTotalItemsDiscountAmount()"
+                                            onmouseover="itemsDiscountValue(this.value),findTotalAmount(),findTotalItemsDiscountAmount()"
                                             placeholder="@lang(" site.Discount_After_Tax")">
                                     </div>
                                 </div>
@@ -492,36 +528,43 @@
                                             <label for="TotalTaxableFees" class="form-label">@lang("site.Total
                                                 Taxable
                                                 Fees")</label>
-                                            <input type="number" class="form-control" id="TotalTaxableFees"
-                                                placeholder="@lang(" site.Total Taxable Fees")">
+                                            <input type="number" readonly class="form-control" step="any"
+                                                name="t2Amount[]" id="t2" onkeyup="findTotalt2Amount()"
+                                                onmouseover="findTotalt2Amount()" placeholder="@lang(" site.Total
+                                                Taxable Fees")">
                                         </div>
                                         <div class="col-md-6">
                                             <label for="Totalt4Amount"
                                                 class="form-label">@lang("site.Totalt4Amount")</label>
-                                            <input type="number" class="form-control" id="Totalt4Amount"
-                                                placeholder="@lang(" site.Totalt4Amount")">
+                                            <input type="number" class="form-control" name="t4Amount[]" readonly
+                                                id="t4Amount" onkeyup="findTotalt4Amount()"
+                                                onmouseover="findTotalt4Amount()" placeholder="@lang("
+                                                site.Totalt4Amount")">
                                         </div>
                                     </div>
                                     <div class="row g-3">
                                         <div class="col-md-6">
                                             <label for="Subtotal" class="form-label">@lang("site.Sub
                                                 total")</label>
-                                            <input type="number" class="form-control" id="Subtotal" placeholder="@lang("
-                                                site.Sub total")">
+                                            <input type="number" class="form-control" name="salesTotal[]" readonly
+                                                id="salesTotal" placeholder="@lang(" site.Sub total")">
                                         </div>
                                         <div class="col-md-6">
                                             <label for="NetTotal" class="form-label">@lang("site.Net
                                                 Total")</label>
-                                            <input type="number" class="form-control" id="NetTotal" placeholder="@lang("
-                                                site.Net Total")">
+                                            <input type="number" class="form-control" readonly name="netTotal[]"
+                                                id="netTotal" onkeyup="nettotal(this.value),findTotalNetAmount()"
+                                                onmouseover="nettotal(this.value),findTotalNetAmount()"
+                                                placeholder="@lang(" site.Net Total")">
                                         </div>
                                     </div>
                                     <div class="row g-3">
 
                                         <div class="col-md-12">
                                             <label for="lineTotal" class="form-label">@lang("site.lineTotal")</label>
-                                            <input type="number" class="form-control" id="lineTotal"
-                                                placeholder="@lang(" site.lineTotal")">
+                                            <input type="number" class="form-control" name="totalItemsDiscount[]"
+                                                readonly id="totalItemsDiscount" onkeyup="findTotalAmount()"
+                                                onmouseover="findTotalAmount()" placeholder="@lang(" site.lineTotal")">
                                         </div>
                                     </div>
 
@@ -529,13 +572,14 @@
                                 </div>
                             </div>
                         </div>
+                        <div style="z-index:1;text-align: center">
+                            <button id="addNewOne" type="button" class="btn btn-info" style="width: 200px">Add
+                                Line</button>
+
+                        </div>
                     </div>
                 </div>
 
-                <div style="z-index:1;text-align: center">
-                    <button onclick="addLine()">Add Line</button>
-
-                </div>
 
             </div>
         </div>
@@ -553,49 +597,392 @@
                     <div class="col-md-6">
                         <label for="findTotalt2Amount" class="form-label">@lang("site.Total T2
                             Amount")</label>
-                        <input type="number" readonly class="form-control" id="findTotalt2Amount">
+                        <input type="number" class="form-control" step="any" name="totalt2Amount"
+                            onmouseover="findTotalt2Amount()" onkeyup="findTotalt2Amount()" readonly id="totalt2Amount">
                     </div>
                     <div class="col-md-6">
                         <label for="findTotalt4Amount" class="form-label">@lang("site.Total T4
                             Amount")</label>
-                        <input type="number" readonly class="form-control" id="findTotalt4Amount">
+                        <<input class="form-control" type="number" step="any" name="totalt4Amount"
+                            onmouseover="findTotalt4Amount()" onkeyup="findTotalt4Amount()" readonly id="totalt4Amount">
                     </div>
                     <div class="col-md-6">
                         <label for="salesTotal" class="form-label">@lang("site.Sales Total")</label>
-                        <input type="number" readonly class="form-control" id="salesTotal">
+                        <input type="number" class="form-control" name="totalDiscountAmount"
+                            onmouseover="findTotalDiscountAmount()" onkeyup="findTotalDiscountAmount()" readonly
+                            id="totalDiscountAmount">
                     </div>
                     <div class="col-md-6">
                         <label for="netTotal" class="form-label">@lang("site.Net Total")</label>
-                        <input type="number" readonly class="form-control" id="netTotal">
+                        <input type="number" class="form-control" step="any" name="TotalSalesAmount"
+                            onmouseover="findTotalSalesAmount()" onkeyup="findTotalSalesAmount()" readonly
+                            id="TotalSalesAmount">
                     </div>
                     <div class="col-md-6">
                         <label for="findTotalNetAmount" class="form-label">@lang("site.Total Net
                             Amount")</label>
-                        <input type="number" readonly class="form-control" id="findTotalNetAmount">
+                        <input type="number" step="any" class="form-control" name="TotalNetAmount"
+                            onmouseover="findTotalNetAmount()" onkeyup="findTotalNetAmount()" readonly
+                            id="TotalNetAmount">
                     </div>
                     <div class="col-md-6">
                         <label for="TotalDiscount" class="form-label">@lang("site.Total Discount")</label>
-                        <input type="number" readonly class="form-control" id="TotalDiscount">
+                        <input type="number" step="any" name="totalItemsDiscountAmount" class="form-control"
+                            onmouseover="findTotalItemsDiscountAmount()" onkeyup="findTotalItemsDiscountAmount()"
+                            readonly id="totalItemsDiscountAmount">
                     </div>
 
 
                     <div class="col-12">
                         <label for="ExtraInvoiceDiscount" class="form-label">@lang("site.Extra Invoice
                             Discount") </label>
-                        <input type="number" class="form-control" id="ExtraInvoiceDiscount">
+                        <input type="number" class="form-control" step="any" name="ExtraDiscount" id="ExtraDiscount"
+                            onkeyup="Extradiscount(this.value),findTotalAmount()"
+                            onmouseover="Extradiscount(this.value),findTotalAmount()" required>
                     </div>
+
+
                     <div class="col-12">
-                        <label for="findTotalAmount" class="form-label">@lang("site.Total Paid Amount")
+                        <label for="findTotalAmount" class="form-label">إجمالى المبلغ (قبل الخصم)
                         </label>
-                        <input type="number" readonly class="form-control" id="findTotalAmount">
+                        <input class="form-control" type="number" step="any" name="totalAmount" readonly
+                            id="totalAmount">
+                    </div>
+
+
+                    <div class="col-12">
+                        <label for="findTotalAmount" class="form-label">إجمالى المبلغ (بعد الخصم)
+                        </label>
+                        <input type="number" class="form-control" style="color: red;font-weight: bold;font-size: 20px"
+                            type="number" step="any" name="totalAmount2" readonly id="totalAmount2">
                     </div>
                     <div class="col-12">
                         <div class="d-grid">
-                            <button type="button" class="btn btn-primary">Submit Document</button>
+                            <button type="submit" class="btn btn-primary">Submit Document</button>
                         </div>
+                    </form>
                     </div>
 
                 </div>
 
             </div>
-            <!--end row-->
+        </div>
+
+
+        <script>
+            $(document).ready(function() {
+                    let i = 1
+                    $("#addNewOne").click(function() {
+                        i++;
+                        $('#newOne').append(
+                            `<div id="row${i}">
+                                <button type="button" style="margin-right:30px" name="remove" id="${i}"  class="btn btn-danger btn_remove">x</button>
+
+
+                               <div class="border border-3 p-4 rounded">
+                                <div class="mb-3">
+                                    <label for="inputProductTitle" class="form-label">@lang("site.Line
+                                        Items")</label>
+
+                                    <select name="itemCode[]" id="itemCode" class="form-control form-control-sm form-select" required>
+                                        @foreach ($products as $product)
+                                        <option value="{{ $product['itemCode'] }}" style="font-size: 20px">
+                                            {{$product['codeNameSecondaryLang']}}
+                                            @endforeach
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="inputProductDescription" class="form-label">@lang("site.Line
+                                        Decription") ${i}</label>
+                                    <textarea name="invoiceDescription[]" class="form-control" id="inputProductDescription" rows="2"></textarea>
+                                </div>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label for="linePrice" class="form-label">Price</label>
+                                        <input class="form-control" step="any" type="number" step="any" name="amountEGP[]" id="amountEGP${i}"
+                                            onkeyup="operation${i}(this.value),findTotalSalesAmount();;"
+                                            onmouseover="operation${i}(this.value),findTotalSalesAmount();;">
+                                    </div>
+                                    <div class=" col-md-6">
+                                        <label class="form-label">Quantity</label>
+                                        <input class="form-control" type="number" step="any" name="quantity[]" id="quantity${i}"
+                                            onkeyup="proccess${i}(this.value),findTotalSalesAmount();"
+                                            onmouseover="proccess${i}(this.value),findTotalSalesAmount();">
+                                    </div>
+                                </div>
+                                <div class=" row g-3">
+                                    <div class="col-md-6">
+                                        <label for="inputProductTitle" class="form-label">@lang("site.Tax
+                                            added Type")</label>
+
+                                        <select name="t1subtype[]" required id="t1subtype" class="form-control form-control-sm form-select">
+                                            <option disabled selected style="font-size: 15px;width: 100px;">نوع الضريبة
+                                            </option>
+                                            @foreach ($taxTypes as $type)
+                                            @if($type->parent === "T1")
+                                            <option value="{{ $type->code }}" style="font-size: 15px;width: 100px;">{{
+                                                $type->name_ar }}
+
+                                                @endif
+                                                @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="lineTaxAdd" class="form-label">@lang("site.Tax_added")</label>
+                                        <input type="number" class="form-control" name="rate[]" id="rate${i}" class="form-control form-control-sm"
+                                            onkeyup="findTotalt2Amount()" onmouseover="findTotalt2Amount()" placeholder="@lang(" site.Tax_added")">
+                                    </div>
+                                </div>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label for="inputProductTitle" class="form-label">@lang("site.Tax t4
+                                            Type")</label>
+                                        <select name="t4subtype[]" required id="t4subtype" class="form-control form-control-sm form-select">
+                                            <option disabled selected>@lang("site.Tax t4 Type")</option>
+                                            @foreach ($taxTypes as $type)
+                                            @if($type->parent === "T4")
+                                            <option value="{{ $type->code }}" style="font-size: 15px;width: 100px;">{{
+                                                $type->name_ar }}
+
+                                                @endif
+                                                @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="lineTaxT4" class="form-label">@lang("site.Tax t4
+                                            Value")</label>
+                                        <input type="number" class="form-control" name="t4rate[]" id="t4rate${i}" onkeyup="findTotalt4Amount()"
+                                            onmouseover="findTotalt4Amount()" placeholder="@lang(" site.Tax t4 Value")">
+                                    </div>
+                                </div>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label for="lineDiscount" class="form-label">@lang("site.Discount")</label>
+
+                                        <input class="form-control" placeholder=" @lang(" site.Discount")" type="number" step="any"
+                                            name="discountAmount[]" id="discountAmount${i}"
+                                            onkeyup="discount${i}(this.value),findTotalDiscountAmount(),findTotalNetAmount(),findTotalt4Amount(),findTotalt2Amount()"
+                                            onmouseover="discount${i}(this.value),findTotalDiscountAmount(),findTotalNetAmount(),findTotalt4Amount(),findTotalt2Amount()">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="lineDiscountAfterTax" class="form-label">@lang("site.Discount_After_Tax") </label>
+                                        <input type="number" class="form-control" step="any" name="itemsDiscount[]" id="itemsDiscount${i}"
+                                            onkeyup="itemsDiscountValue${i}(this.value),findTotalAmount(),findTotalItemsDiscountAmount()"
+                                            onmouseover="itemsDiscountValue${i}(this.value),findTotalAmount(),findTotalItemsDiscountAmount()"
+                                            placeholder="@lang(" site.Discount_After_Tax")">
+                                    </div>
+                                </div>
+                            </div></BR>
+                            <div class="border border-3 p-4 rounded">
+                                <div class="mb-3">
+                                    @lang("site.Line Total")
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label for="TotalTaxableFees" class="form-label">@lang("site.Total
+                                                Taxable
+                                                Fees")</label>
+                                            <input type="number" readonly class="form-control" step="any" name="t2Amount[]" id="t2${i}"
+                                                onkeyup="findTotalt2Amount()" onmouseover="findTotalt2Amount()" placeholder="@lang(" site.Total
+                                                Taxable Fees")">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="Totalt4Amount" class="form-label">@lang("site.Totalt4Amount")</label>
+                                            <input type="number" class="form-control" name="t4Amount[]" readonly id="t4Amount${i}"
+                                                onkeyup="findTotalt4Amount()" onmouseover="findTotalt4Amount()" placeholder="@lang("
+                                                site.Totalt4Amount")">
+                                        </div>
+                                    </div>
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label for="Subtotal" class="form-label">@lang("site.Sub
+                                                total")</label>
+                                            <input type="number" class="form-control" name="salesTotal[]" readonly id="salesTotal${i}"
+                                                placeholder="@lang(" site.Sub total")">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="NetTotal" class="form-label">@lang("site.Net
+                                                Total")</label>
+                                            <input type="number" class="form-control" readonly name="netTotal[]" id="netTotal${i}"
+                                                onkeyup="nettotal${i}(this.value),findTotalNetAmount()"
+                                                onmouseover="nettotal${i}(this.value),findTotalNetAmount()" placeholder="@lang(" site.Net Total")">
+                                        </div>
+                                    </div>
+                                    <div class="row g-3">
+
+                                        <div class="col-md-12">
+                                            <label for="lineTotal" class="form-label">@lang("site.lineTotal")</label>
+                                            <input type="number" class="form-control" name="totalItemsDiscount[]" readonly id="totalItemsDiscount${i}"
+                                                onkeyup="findTotalAmount()" onmouseover="findTotalAmount()" placeholder="@lang(" site.lineTotal")">
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+
+                            <hr>
+                            </div> `
+
+
+                        )
+
+
+                        $('<script> function operation' + i + '(value) {var x, y, z;  var quantity = document.getElementById("quantity' + i + '").value; x = value * quantity; document.getElementById("salesTotal' + i + '").value = x.toFixed(2);};  function proccess' + i + '(value) {var x, y, z;  var amounEGP = document.getElementById("amountEGP' + i + '").value; y = value * amounEGP; document.getElementById("salesTotal' + i + '").value = y.toFixed(2);};function discount' + i + '(value) {var salesTotal, netTotal, z, t2valueEnd, t1Value, rate, t4rate, t4Amount; salesTotal = document.getElementById("salesTotal' + i + '").value; netTotal = salesTotal - value; netTotalEnd = document.getElementById("netTotal' + i + '").value = netTotal.toFixed(2); rate = document.getElementById("rate' + i + '").value; t4rate = document.getElementById("t4rate' + i + '").value;  t2valueEnd = document.getElementById("t2' + i + '").value = ((netTotalEnd * rate) / 100).toFixed(2); t4Amount = document.getElementById("t4Amount' + i + '").value = ((netTotal * t4rate) / 100).toFixed(2);}; function itemsDiscountValue' + i + '(value) {var x, netTotal, t1amount, t2amount, t4Amount;netTotal = document.getElementById("netTotal' + i + '").value;t2amount = document.getElementById("t2' + i + '").value;t4Amount = document.getElementById("t4Amount' + i + '").value;x = parseFloat(netTotal) + parseFloat(t2amount) - parseFloat(t4Amount) - parseFloat(value);document.getElementById("totalItemsDiscount' + i + '").value = x.toFixed(2);};  </' + 'script>').appendTo('#test123');
+                        $(document).on('click', '.btn_remove', function() {
+                            var button_id = $(this).attr("id");
+                            $("#row" + button_id + "").remove()
+                            findTotalDiscountAmount();
+                            findTotalSalesAmount();
+                            findTotalNetAmount();
+                            findTotalt4Amount();
+                            findTotalt2Amount();
+                            findTotalAmount();
+                            findTotalItemsDiscountAmount();
+                        })
+                    });
+                });
+
+        </script>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+        <script id="test123">
+            // this is invoice 1
+
+                function operation(value) {
+                    var x, y, z;
+
+                    var quantity = document.getElementById("quantity").value;
+                    x = value * quantity;
+                    document.getElementById("salesTotal").value = x.toFixed(2);
+                };
+
+                function proccess(value) {
+                    var x, y, z;
+                    var amounEGP = document.getElementById("amountEGP").value;
+                    y = value * amounEGP;
+                    document.getElementById("salesTotal").value = y.toFixed(2);
+                };
+
+                function discount(value) {
+                    var salesTotal, netTotal, z, t2valueEnd, t1Value, rate, t4rate, t4Amount;
+                    salesTotal = document.getElementById("salesTotal").value;
+                    netTotal = salesTotal - value;
+
+                    netTotalEnd = document.getElementById("netTotal").value = netTotal.toFixed(2);
+                    rate = document.getElementById("rate").value;
+                    t4rate = document.getElementById("t4rate").value;
+                    t2valueEnd = document.getElementById("t2").value =
+                        ((netTotalEnd * rate) / 100).toFixed(2);
+                    t4Amount = document.getElementById("t4Amount").value =
+                        ((netTotal * t4rate) / 100).toFixed(2);
+                }
+
+                function itemsDiscountValue(value) {
+                    var x, netTotal, t1amount, t2amount, t4Amount;
+                    netTotal = document.getElementById("netTotal").value;
+                    t2amount = document.getElementById("t2").value;
+                    t4Amount = document.getElementById("t4Amount").value;
+                    x =
+                        parseFloat(netTotal) +
+                        parseFloat(t2amount) -
+                        parseFloat(t4Amount) -
+                        parseFloat(value);
+                    document.getElementById("totalItemsDiscount").value = x.toFixed(2);
+                }
+
+                function Extradiscount(value) {
+                    var totalDiscount, x;
+                    totalDiscount = document.getElementById("totalAmount").value;
+                    x = totalDiscount - value;
+                    document.getElementById("totalAmount2").value = x.toFixed(2);
+                }
+
+                function findTotalDiscountAmount() {
+                    var arr = document.getElementsByName("discountAmount[]");
+                    var tot = 0;
+                    for (var i = 0; i < arr.length; i++) {
+                        if (parseFloat(arr[i].value)) {
+                            tot += parseFloat(arr[i].value);
+                        }
+                    }
+                    document.getElementById("totalDiscountAmount").value = tot.toFixed(2);
+
+                }
+
+                function findTotalSalesAmount() {
+                    var arr = document.getElementsByName("salesTotal[]");
+                    var tot = 0;
+                    for (var i = 0; i < arr.length; i++) {
+                        if (parseFloat(arr[i].value)) {
+                            tot += parseFloat(arr[i].value);
+                        }
+                    }
+                    document.getElementById("TotalSalesAmount").value = tot.toFixed(2);
+
+                }
+
+                function findTotalNetAmount() {
+                    var arr = document.getElementsByName("netTotal[]");
+                    var tot = 0;
+                    for (var i = 0; i < arr.length; i++) {
+                        if (parseFloat(arr[i].value)) {
+                            tot += parseFloat(arr[i].value);
+                        }
+                    }
+                    document.getElementById("TotalNetAmount").value = tot.toFixed(2);
+
+                }
+
+                function findTotalt4Amount() {
+                    var arr = document.getElementsByName("t4Amount[]");
+                    var tot = 0;
+                    for (var i = 0; i < arr.length; i++) {
+                        if (parseFloat(arr[i].value)) {
+                            tot += parseFloat(arr[i].value);
+                        }
+                    }
+                    document.getElementById("totalt4Amount").value = tot.toFixed(2);
+                }
+
+                function findTotalt2Amount() {
+                    var arr = document.getElementsByName("t2Amount[]");
+                    var tot = 0;
+                    for (var i = 0; i < arr.length; i++) {
+                        if (parseFloat(arr[i].value)) {
+                            tot += parseFloat(arr[i].value);
+                        }
+                    }
+                    document.getElementById("totalt2Amount").value = tot.toFixed(2);
+                }
+                function findTotalAmount() {
+                    var arr = document.getElementsByName("totalItemsDiscount[]");
+                    var tot = 0;
+                    for (var i = 0; i < arr.length; i++) {
+                        if (parseFloat(arr[i].value)) {
+                            tot += parseFloat(arr[i].value);
+                        }
+                    }
+                    document.getElementById("totalAmount").value = tot.toFixed(2);
+                }
+                function findTotalItemsDiscountAmount() {
+                    var arr = document.getElementsByName("itemsDiscount[]");
+                    var tot = 0;
+                    for (var i = 0; i < arr.length; i++) {
+                        if (parseFloat(arr[i].value)) {
+                            tot += parseFloat(arr[i].value);
+                        }
+                    }
+                    document.getElementById("totalItemsDiscountAmount").value = tot.toFixed(2);
+                }
+
+        </script>
+        <!--end row-->
+        <script>
+            function randomTest(){
+       var internalValue =  document.getElementById('internalId') ;
+        internalValue.value = Math.floor(Math.random()*105140 );
+    }
+        </script>
