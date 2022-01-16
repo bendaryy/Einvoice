@@ -9,6 +9,7 @@ use App\Http\Controllers\ImportController as import;
 use App\Http\Controllers\IssureController as issure;
 use App\Http\Controllers\MainController as main;
 use App\Http\Controllers\manageDoucumentController;
+use App\Http\Controllers\PackagesController;
 use App\Http\Controllers\ProductsController as products;
 use App\Http\Controllers\ProfileController as profile;
 use App\Http\Controllers\RemoteController as remote;
@@ -123,8 +124,8 @@ Route::group(
 // for reject recived invoices
             Route::put('rejectDocument/{uuid}', [manageDoucumentController::class, 'RejectDocument'])->name('RejectDocument')->middleware('auth');
             Route::get('pending', [products::class, 'pending'])->name('pending');
-
-
+            Route::get('add-package',[PackagesController::class,'addSummaryPackage'])->name('addpackage');
+            Route::post('add-sendPackage',[PackagesController::class,'sendPackage'])->name('sendPackage');
         });
 
     });

@@ -84,6 +84,7 @@ return [
     'Delivery Information' => 'Delivery Information',
     'desc' => 'Description',
     'general info' => 'General Info',
+    "documentPackage"=>"document packages",
     '' => '',
     '' => '',
     '' => '',

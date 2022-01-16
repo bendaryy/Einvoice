@@ -13,6 +13,7 @@ return [
     'password' => 'كلمه المرور',
     'forgot' => 'نسيت كلمه السر',
     'remomber' => 'تذكرني',
+    "documentPackage"=>"حزم الوثائق",
 
     // General
 

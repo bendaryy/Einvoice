@@ -132,6 +132,12 @@
                         <div class="menu-title">@lang('site.add-document')</div>
                     </a> --}}
 
+
+                      <a href="{{ route('addpackage')}}">
+                        <div class="parent-icon"><i class='bx bx-cart-alt'></i></div>
+                        <div class="menu-title">@lang('site.documentPackage')</div>
+                    </a>
+
                 </li>
 
                 <li class="menu-label">@lang('site.customers')</li>
