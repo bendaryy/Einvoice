@@ -15,7 +15,6 @@ class manageDoucumentController extends Controller
     // this is for show sent inovices
     public function sentInvoices()
     {
-        $setting = Apisetting::first();
         $response = Http::asForm()->post('https://id.preprod.eta.gov.eg/connect/token', [
             'grant_type' => 'client_credentials',
             'client_id' => auth()->user()->details->client_id,
@@ -39,11 +38,10 @@ class manageDoucumentController extends Controller
 
     public function receivedInvoices()
     {
-        $setting = Apisetting::first();
         $response = Http::asForm()->post('https://id.preprod.eta.gov.eg/connect/token', [
             'grant_type' => 'client_credentials',
-            'client_id' => $setting->client_id,
-            'client_secret' => $setting->secret_id,
+            'client_id' => auth()->user()->details->client_id,
+            'client_secret' => auth()->user()->details->client_secret,
             'scope' => "InvoicingAPI",
         ]);
 
@@ -54,7 +52,7 @@ class manageDoucumentController extends Controller
         $allInvoices = $showInvoices['result'];
 
         $allMeta = $showInvoices['metadata'];
-        $taxId = $setting->commercial_number;
+        $taxId = auth()->user()->details->company_id;
 
         return view('invoices.receivedInvoices', compact('allInvoices', 'allMeta', 'taxId'));
     }

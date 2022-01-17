@@ -9,6 +9,7 @@ use App\Http\Controllers\ImportController as import;
 use App\Http\Controllers\IssureController as issure;
 use App\Http\Controllers\MainController as main;
 use App\Http\Controllers\manageDoucumentController;
+use App\Http\Controllers\notificationController;
 use App\Http\Controllers\PackagesController;
 use App\Http\Controllers\ProductsController as products;
 use App\Http\Controllers\ProfileController as profile;
@@ -124,8 +125,16 @@ Route::group(
 // for reject recived invoices
             Route::put('rejectDocument/{uuid}', [manageDoucumentController::class, 'RejectDocument'])->name('RejectDocument')->middleware('auth');
             Route::get('pending', [products::class, 'pending'])->name('pending');
-            Route::get('add-package',[PackagesController::class,'addSummaryPackage'])->name('addpackage');
-            Route::post('add-sendPackage',[PackagesController::class,'sendPackage'])->name('sendPackage');
+
+            Route::get('add-package', [PackagesController::class, 'addFullPackage'])->name('addFullPackage');
+            Route::get('add-package-summary', [PackagesController::class, 'addSummaryPackage'])->name('addPackageSummary');
+
+            Route::post('add-sendPackage-full', [PackagesController::class, 'sendFullPackage'])->name('sendFullPackage');
+            Route::post('add-sendPackage-summary', [PackagesController::class, 'sendSummaryPackage'])->name('sendSummaryPackage');
+            Route::get('allPackages',[PackagesController::class,'showAllPackages'])->name('showAllPackages');
+            Route::get('downloadPackage/{id}',[PackagesController::class,'downloadPackage'])->name('downloadPackage');
+            Route::get('notification', [notificationController::class, 'getNotifications'])->name('getNotifications');
+            // Route::get('getNotificationsDashboard', [notificationController::class, 'getNotificationsDashboard'])->name('getNotificationsDashboard');
         });
 
     });

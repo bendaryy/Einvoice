@@ -59,7 +59,7 @@ ss
                         </div>
                         <hr>
 
-                        <form class="row g-3" method="post" action="{{ route('sendSummaryPackage') }}"
+                        <form class="row g-3" method="post" action="{{ route('sendFullPackage') }}"
                             enctype="multipart/form-data">
                             @csrf
 
@@ -69,7 +69,6 @@ ss
                                 <select name="format" class="form-select form-select-lg mb-3"
                                     aria-label=".form-select-lg example">
                                     <option selected disabled>اختر الحزمة</option>
-                                    <option value="CSV">csv</option>
                                     <option value="JSON">json</option>
                                     <option value="XML">xml</option>
                                 </select>

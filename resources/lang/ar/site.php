@@ -13,7 +13,9 @@ return [
     'password' => 'كلمه المرور',
     'forgot' => 'نسيت كلمه السر',
     'remomber' => 'تذكرني',
-    "documentPackage"=>"حزم الوثائق",
+    "createDocumentPackageFull"=>"إنشاء حزمة وثائق كاملة",
+    "createDocumentPackageSummary"=>"إنشاء حزمة وثائق ملخصة",
+    "showAllPackages"=>"عرض و تحميل الحزم",
 
     // General
 
