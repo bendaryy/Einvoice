@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Apisetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Redirect;
-
 
 class manageDoucumentController extends Controller
 {
@@ -308,6 +306,7 @@ class manageDoucumentController extends Controller
                     "swiftCode" => $request->swiftCode,
                     "terms" => $request->Bankterms,
                 ),
+
                 "documentType" => $request->DocumentType,
                 "documentTypeVersion" => "0.9",
                 "dateTimeIssued" => $request->date . "T" . date("h:i:s") . "Z",
@@ -384,8 +383,13 @@ class manageDoucumentController extends Controller
             $invoice["documents"][0]['invoiceLines'][$i] = $Data;
         }
 
-        $trnsformed = json_encode($invoice, JSON_UNESCAPED_UNICODE);
+        ($request->referencesInvoice ? $invoice["documents"][0]['references'] = [$request->referencesInvoice] : "");
 
+
+
+
+
+        $trnsformed = json_encode($invoice, JSON_UNESCAPED_UNICODE);
 
         $response = Http::asForm()->post('https://id.preprod.eta.gov.eg/connect/token', [
             'grant_type' => 'client_credentials',
@@ -404,12 +408,9 @@ class manageDoucumentController extends Controller
             // return $senInvoice->body();
 
         } else {
-            // return $senInvoice->body();
-            return redirect()->route('sentInvoices')->with('error', "يوجد خطأ فى الفاتورة من فضلك اعد تسجيلها");
+            return $senInvoice->body();
+            // return redirect()->route('sentInvoices')->with('error', "يوجد خطأ فى الفاتورة من فضلك اعد تسجيلها");
         }
-
-
-
 
     }
 

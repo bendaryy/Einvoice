@@ -135,6 +135,9 @@ Route::group(
             Route::get('downloadPackage/{id}',[PackagesController::class,'downloadPackage'])->name('downloadPackage');
             Route::get('notification', [notificationController::class, 'getNotifications'])->name('getNotifications');
             // Route::get('getNotificationsDashboard', [notificationController::class, 'getNotificationsDashboard'])->name('getNotificationsDashboard');
+            Route::get('livewire',function(){
+                return view('invoices.testlivewire');
+            });
         });
 
     });
